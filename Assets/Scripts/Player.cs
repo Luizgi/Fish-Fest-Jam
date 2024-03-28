@@ -7,6 +7,7 @@ public class Player : MonoBehaviour
 {
     [Header("Components")]
     Rigidbody2D rb2d;
+    SpriteRenderer spr;
 
     [Header("Inputs")]
     float horizontal;
@@ -46,6 +47,7 @@ public class Player : MonoBehaviour
     private void Awake()
     {
         rb2d = GetComponent<Rigidbody2D>();
+        spr = GetComponentInChildren<SpriteRenderer>();
     }
 
     private void Start()
@@ -54,8 +56,7 @@ public class Player : MonoBehaviour
     }
     private void Update()
     {
-        //
-
+        Rotate();
 
 
         //Setting Inputs
@@ -71,11 +72,35 @@ public class Player : MonoBehaviour
             LostSaciety(10);
         }
 
-        if(canEat == true)
+        if (canEat == true)
         {
             Eat();
         }
     }
+
+    private void Rotate()
+    {
+
+        // GAMBIARRA A GENTE ACEITA PARA CARALHO
+        float rotationZ = transform.rotation.eulerAngles.z;
+        float scaleY = 1f;
+
+        if (rotationZ >= 0f && rotationZ <= 90f)
+        {
+            scaleY = 1f;
+        }
+        else if (rotationZ > 90f && rotationZ <= 270f)
+        {
+            scaleY = -1f;
+        }
+        else if (rotationZ > 270f && rotationZ <= 360f)
+        {
+            scaleY = 1f;
+        }
+
+        transform.localScale = new Vector3(transform.localScale.x, scaleY, transform.localScale.z);
+    }
+
 
     private void Eat()
     {
