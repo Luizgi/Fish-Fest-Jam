@@ -5,14 +5,17 @@ using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
+    // Componentes do jogador
     [Header("Components")]
     Rigidbody2D rb2d;
     SpriteRenderer spr;
 
+    // Entradas do jogador
     [Header("Inputs")]
     float horizontal;
     float vertical;
 
+    // UI
     [Header("UI")]
     [SerializeField] private Image mySaciety;
     [SerializeField] private Image sacietyBG;
@@ -20,6 +23,7 @@ public class Player : MonoBehaviour
     [SerializeField] private float sacietyDecreaseSpeed = 0.5f;
     [SerializeField] private float sacietyRecoverSpeed = 1.0f;
 
+    // Variáveis locais
     [Header("Local")]
     float moveLim = .7f;
     float swimSpeed = 5f;
@@ -27,46 +31,52 @@ public class Player : MonoBehaviour
     int saciety;
     int lostLife;
 
+    // Variáveis de comer
     [Header("Eat Variables")]
     [SerializeField] bool canEat = false;
     [SerializeField] GameObject possibleEat;
 
-
+    // Testes
     [Header("Tests")]
     [SerializeField] bool testing = true;
     [SerializeField] bool changeMove = false;
 
+    // Controle de tempo de pressionar o botão
     [Header("Hold Time")]
     public float requiredHoldTime = 2f;
     [SerializeField] private bool buttonHeld = false;
     [SerializeField] private float currentHoldTime = 0f;
 
+    // Partículas
     [Header("Particles")]
     [SerializeField] private GameObject bubbles;
 
     private void Awake()
     {
+        // Inicializa os componentes
         rb2d = GetComponent<Rigidbody2D>();
-        spr = GetComponentInChildren<SpriteRenderer>();
+        //spr = GetComponentInChildren<SpriteRenderer>();
     }
 
     private void Start()
     {
+        // Inicializa a saciedade
         saciety = maxSaciety;
     }
+
     private void Update()
     {
+        // Rotaciona o jogador
         Rotate();
 
-
-        //Setting Inputs
+        // Obtém as entradas do jogador
         horizontal = Input.GetAxisRaw("Horizontal");
         vertical = Input.GetAxisRaw("Vertical");
 
-        //Transforming saciety to fill
+        // Atualiza a barra de saciedade na UI
         mySaciety.fillAmount = ((float)saciety / (float)maxSaciety);
 
-        //Testing:
+        // Testes
         if (Input.GetButtonDown("Fire1") && testing == true)
         {
             LostSaciety(10);
@@ -80,8 +90,7 @@ public class Player : MonoBehaviour
 
     private void Rotate()
     {
-
-        // GAMBIARRA A GENTE ACEITA PARA CARALHO
+        // Rotaciona o jogador conforme a escala
         float rotationZ = transform.rotation.eulerAngles.z;
         float scaleY = 1f;
 
@@ -101,9 +110,9 @@ public class Player : MonoBehaviour
         transform.localScale = new Vector3(transform.localScale.x, scaleY, transform.localScale.z);
     }
 
-
     private void Eat()
     {
+        // Comer ao manter o botão pressionado
         if (Input.GetButton("Fire2") && testing == true)
         {
             if (!buttonHeld)
@@ -128,6 +137,7 @@ public class Player : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
+        // Verifica se o jogador está perto de comida
         if (collision.CompareTag("Food"))
         {
             canEat = true;
@@ -137,31 +147,33 @@ public class Player : MonoBehaviour
 
     void LostSaciety(int lost)
     {
+        // Perde saciedade
         saciety -= lost;
         StartCoroutine(DecreaseSaciety());
     }
 
     void RecoverSaciety(int recover)
     {
+        // Recupera saciedade
         int remainigRecover = maxSaciety - saciety;
         int actualRecover = Mathf.Min(remainigRecover, recover);
 
         StartCoroutine(IncreaseSaciety(actualRecover));
     }
 
-
     private void FixedUpdate()
     {
-        if(changeMove == false)
+        // Movimentação do jogador
+        if (changeMove == false)
             Move();
-        if(testing == true && changeMove)
+        if (testing == true && changeMove)
             MoveTest();
     }
 
     private void MoveTest()
     {
-        //First Movimentation
-        if(horizontal != 0)
+        // Movimentação de teste
+        if (horizontal != 0)
         {
             rb2d.velocity = new Vector2(horizontal * swimSpeed, vertical * swimSpeed);
             horizontal *= moveLim;
@@ -173,15 +185,15 @@ public class Player : MonoBehaviour
 
     private void Move()
     {
-        //Second Movimentation
+        // Movimentação padrão
         transform.Rotate(Vector3.forward * -horizontal * rotSpeed * Time.deltaTime);
-        Vector2 moveDir = new Vector2 (Mathf.Cos(transform.eulerAngles.z * Mathf.Deg2Rad), Mathf.Sin(transform.eulerAngles.z * Mathf.Deg2Rad));
+        Vector2 moveDir = new Vector2(Mathf.Cos(transform.eulerAngles.z * Mathf.Deg2Rad), Mathf.Sin(transform.eulerAngles.z * Mathf.Deg2Rad));
         rb2d.velocity = moveDir * vertical * swimSpeed * moveLim;
 
-
+        // Ativa ou desativa as partículas de bolhas
         Vector2 velocity = rb2d.velocity;
 
-        if (velocity.magnitude == 0) 
+        if (velocity.magnitude == 0)
         {
             bubbles.SetActive(true);
         }
@@ -193,6 +205,7 @@ public class Player : MonoBehaviour
 
     IEnumerator DecreaseSaciety()
     {
+        // Reduz a saciedade gradualmente
         float targetFillAmount = (float)saciety / (float)maxSaciety;
 
         while (sacietyBG.fillAmount > targetFillAmount)
@@ -206,9 +219,10 @@ public class Player : MonoBehaviour
 
     IEnumerator IncreaseSaciety(int recoverAmount)
     {
+        // Aumenta a saciedade gradualmente
         float targetFillAmount = ((float)saciety + recoverAmount) / ((float)maxSaciety);
-        
-        while(sacietyBG.fillAmount < targetFillAmount)
+
+        while (sacietyBG.fillAmount < targetFillAmount)
         {
             sacietyBG.fillAmount += sacietyRecoverSpeed * Time.deltaTime;
             yield return null;
