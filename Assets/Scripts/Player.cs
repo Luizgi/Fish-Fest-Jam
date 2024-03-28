@@ -19,6 +19,7 @@ public class Player : MonoBehaviour
     [Header("UI")]
     [SerializeField] private Image mySaciety;
     [SerializeField] private Image sacietyBG;
+    [SerializeField] private Image myTimeEating;
     [SerializeField] private int maxSaciety = 100;
     [SerializeField] private float sacietyDecreaseSpeed = 0.5f;
     [SerializeField] private float sacietyRecoverSpeed = 1.0f;
@@ -43,7 +44,7 @@ public class Player : MonoBehaviour
 
     // Controle de tempo de pressionar o botão
     [Header("Hold Time")]
-    public float requiredHoldTime = 2f;
+    public float requiredHoldTime = 1f;
     [SerializeField] private bool buttonHeld = false;
     [SerializeField] private float currentHoldTime = 0f;
 
@@ -112,6 +113,7 @@ public class Player : MonoBehaviour
 
     private void Eat()
     {
+
         // Comer ao manter o botão pressionado
         if (Input.GetButton("Fire2") && testing == true)
         {
@@ -119,8 +121,17 @@ public class Player : MonoBehaviour
             {
                 currentHoldTime = 0f;
                 buttonHeld = true;
+                if(myTimeEating!= null)
+                {
+                    myTimeEating.enabled = true;
+                    myTimeEating.fillAmount = currentHoldTime;
+                }
             }
+
             currentHoldTime += Time.deltaTime;
+            if(myTimeEating != null)
+                myTimeEating.fillAmount = currentHoldTime;
+
 
             if (currentHoldTime >= requiredHoldTime)
             {
@@ -131,6 +142,8 @@ public class Player : MonoBehaviour
         }
         else
         {
+            if(myTimeEating!= null)
+                myTimeEating.enabled = false;
             buttonHeld = false;
         }
     }
