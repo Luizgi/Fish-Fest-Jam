@@ -31,6 +31,7 @@ public class Player : MonoBehaviour
     float rotSpeed = 150f;
     int saciety;
     int lostLife;
+    public bool canMove = true;
 
     // Variáveis de comer
     [Header("Eat Variables")]
@@ -67,6 +68,12 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
+
+        if (canMove == false)
+        {
+            rb2d.velocity = new Vector3(0f, 0f, 0f);
+        }
+
         // Rotaciona o jogador
         Rotate();
 
@@ -154,6 +161,8 @@ public class Player : MonoBehaviour
         if (collision.CompareTag("Food"))
         {
             canEat = true;
+            var food = collision.GetComponent<Food>();
+            food.Sort();
             possibleEat = collision.gameObject;
         }
     }
@@ -177,7 +186,7 @@ public class Player : MonoBehaviour
     private void FixedUpdate()
     {
         // Movimentação do jogador
-        if (changeMove == false)
+        if (changeMove == false && canMove == true)
             Move();
         if (testing == true && changeMove)
             MoveTest();
