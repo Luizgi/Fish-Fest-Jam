@@ -35,7 +35,7 @@ public class Player : MonoBehaviour
 
     // Variáveis de comer
     [Header("Eat Variables")]
-    [SerializeField] bool canEat = false;
+    public bool canEat = false;
     [SerializeField] GameObject possibleEat;
 
     // Testes
@@ -47,7 +47,7 @@ public class Player : MonoBehaviour
     [Header("Hold Time")]
     public float requiredHoldTime = 1f;
     [SerializeField] private bool buttonHeld = false;
-    [SerializeField] private float currentHoldTime = 0f;
+    public float currentHoldTime = 0f;
 
     // Partículas
     [Header("Particles")]

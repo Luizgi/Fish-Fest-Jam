@@ -8,6 +8,7 @@ public class Food : MonoBehaviour
     [Header("Hook Variables")]
     [SerializeField] float chanceHook;
     [SerializeField] GameObject Minigame;
+    [SerializeField] GameObject MinigameCanva;
 
     [SerializeField] Player player;
 
@@ -27,13 +28,17 @@ public class Food : MonoBehaviour
         if (chanceHook > 0.5f)
         {
             HookMinigame();
+            player.canEat = false;
+            player.canMove = false;
+
         }
     }
 
     private void HookMinigame()
     {
-        player.canMove = false;
+        
         Debug.Log("Hooked " + "difficulty: " + difficulty);
         Minigame.SetActive(true);
+        MinigameCanva.SetActive(true);
     }
 }
