@@ -33,16 +33,20 @@ public class Fish : MonoBehaviour
     }
     private void Update()
     {
-        if(saturation >= 0f && isHooking == false)
+        if (saturation >= 0f && isHooking == false)
         {
             saturation -= 0.005f;
         }
 
         _saturation.fillAmount = saturation;
+        Move();
+    }
 
+    private void Move()
+    {
         if (Input.GetKey(KeyCode.Space))
         {
-            if(transform.position.y < maxY)
+            if (transform.position.y < maxY)
                 rb2d.velocity = new Vector2(0, strenght);
             else
                 rb2d.velocity = new Vector2(0, 0);
@@ -55,6 +59,7 @@ public class Fish : MonoBehaviour
                 rb2d.velocity = new Vector2(0, 0);
         }
     }
+
     private void OnTriggerStay2D(Collider2D stay)
     {
         if (stay.CompareTag("HookCanva"))

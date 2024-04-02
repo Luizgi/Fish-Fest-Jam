@@ -31,6 +31,9 @@ public class Minigame : MonoBehaviour
             case (1):
                 Basic();
                 break;
+
+                //Fazer mais estados
+                //maximo 3 para jam
         }
         
     }
