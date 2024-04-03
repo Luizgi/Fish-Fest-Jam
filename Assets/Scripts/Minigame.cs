@@ -52,13 +52,4 @@ public class Minigame : MonoBehaviour
         }
 
     }
-
-    private void OnTriggerEnter2D(Collider2D enter)
-    {
-        if (enter.CompareTag("PlayerCanva"))
-        {
-            Debug.Log("Colidiu");
-            speed = 0;
-        }
-    }
 }
