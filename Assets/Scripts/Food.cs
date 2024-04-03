@@ -11,14 +11,41 @@ public class Food : MonoBehaviour
     [SerializeField] GameObject MinigameCanva;
 
     [SerializeField] Player player;
-
+    [SerializeField] Rigidbody2D rb2d;
 
     [Header("Attributes")]
-    [Tooltip("Try put one case after point")][Range(0f, 1f)] public float difficulty;
+    float difficulty;
+
+
+    [Header("Sei lá configs pontocom")]
+    bool arrived = false;
+    float minY = -2;
+    float maxY = 2;
+    Vector2 endedPos;
 
     private void Awake()
-    {
+    {   
+        rb2d = GetComponent<Rigidbody2D>();
+        difficulty = Random.Range(0f, 1f);
         player = FindAnyObjectByType<Player>();
+
+    }
+
+    private void Start()
+    {
+        endedPos = new Vector2(transform.position.x, Random.Range(minY, maxY));
+
+        if(!arrived)
+            rb2d.velocity = Vector2.down * 2;
+    }
+
+    private void Update()
+    {
+        if(transform.position.y <= endedPos.y)
+        {
+            arrived = true;
+            rb2d.velocity = Vector2.zero;
+        }
     }
 
     public void Sort()
@@ -28,15 +55,13 @@ public class Food : MonoBehaviour
         if (chanceHook > 0.5f)
         {
             HookMinigame();
-            player.canEat = false;
             player.canMove = false;
-
+            player.isMinigaming = true;
         }
     }
 
     private void HookMinigame()
-    {
-        
+    {   
         Debug.Log("Hooked " + "difficulty: " + difficulty);
         Minigame.SetActive(true);
         MinigameCanva.SetActive(true);

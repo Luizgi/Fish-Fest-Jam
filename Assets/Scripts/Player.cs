@@ -36,6 +36,7 @@ public class Player : MonoBehaviour
     // Variáveis de comer
     [Header("Eat Variables")]
     public bool canEat = false;
+    public bool isMinigaming = false;
     [SerializeField] GameObject possibleEat;
 
     // Testes
@@ -68,6 +69,7 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
+        mySaciety.fillAmount = ((float)saciety / (float)maxSaciety);
 
         if (canMove == false)
         {
@@ -82,7 +84,7 @@ public class Player : MonoBehaviour
         vertical = Input.GetAxisRaw("Vertical");
 
         // Atualiza a barra de saciedade na UI
-        mySaciety.fillAmount = ((float)saciety / (float)maxSaciety);
+       
 
         // Testes
         if (Input.GetButtonDown("Fire1") && testing == true)
@@ -90,7 +92,7 @@ public class Player : MonoBehaviour
             LostSaciety(10);
         }
 
-        if (canEat == true)
+        if (canEat == true && isMinigaming == false)
         {
             Eat();
         }
@@ -162,8 +164,19 @@ public class Player : MonoBehaviour
         {
             canEat = true;
             var food = collision.GetComponent<Food>();
-            food.Sort();
             possibleEat = collision.gameObject;
+
+            if (currentHoldTime >= 1f)
+                food.Sort();    
+           
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Food"))
+        {
+            canEat = false;
         }
     }
 
@@ -186,7 +199,7 @@ public class Player : MonoBehaviour
     private void FixedUpdate()
     {
         // Movimentação do jogador
-        if (changeMove == false && canMove == true)
+        if (changeMove == false && canMove == true )
             Move();
         if (testing == true && changeMove)
             MoveTest();

@@ -7,6 +7,9 @@ TagManager:
   - Food
   - HookCanva
   - PlayerCanva
+  - myTimeEating
+  - Minigame
+  - MinigameCanva
   layers:
   - Default
   - TransparentFX
