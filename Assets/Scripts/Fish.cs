@@ -33,13 +33,16 @@ public class Fish : MonoBehaviour
     }
     private void Update()
     {
-        if (saturation >= 0f && isHooking == false)
-        {
-            saturation -= 0.005f;
-        }
 
-        _saturation.fillAmount = saturation;
-        Move();
+        if(minigame.waitTime <= 0f)
+        {
+            if (saturation >= 0f && isHooking == false)
+            {
+                saturation -= 0.005f;
+            }
+            _saturation.fillAmount = saturation;
+            Move();
+        }
     }
 
     private void Move()

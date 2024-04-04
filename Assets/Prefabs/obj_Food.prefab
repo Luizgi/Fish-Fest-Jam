@@ -419,6 +419,7 @@ MonoBehaviour:
   minigame: {fileID: 331747256929870226}
   rb2d: {fileID: 0}
   _saturation: {fileID: 6982954993661508816}
+  space: {fileID: 8108766937533677738, guid: aab2416f631aff34e95a1055808f0f3c, type: 3}
 --- !u!1 &2546532999359891407
 GameObject:
   m_ObjectHideFlags: 0
@@ -854,7 +855,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40dc55cb557fbb841b3c79bc5ffe5837, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chanceHook: 0
+  chanceHook: 1
   Minigame: {fileID: 753997790050534569}
   MinigameCanva: {fileID: 4917408747473738340}
   player: {fileID: 0}
@@ -1115,6 +1116,7 @@ MonoBehaviour:
   enemyBar: {fileID: 4911313226187028603}
   state: 1
   speed: 1.5
+  waitTime: 2
   minY: {fileID: 9042853363281006075}
   maxY: {fileID: 4173286705576287414}
   _minY: 0

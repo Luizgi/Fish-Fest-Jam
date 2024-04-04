@@ -17,7 +17,7 @@ public class Food : MonoBehaviour
     float difficulty;
 
 
-    [Header("Sei lá configs pontocom")]
+    [Header("Movimentation")]
     bool arrived = false;
     float minY = -2;
     float maxY = 2;
@@ -50,13 +50,16 @@ public class Food : MonoBehaviour
 
     public void Sort()
     {
-        chanceHook = Random.Range(0f, 1f) * difficulty;
+        chanceHook = 1;//Random.Range(0f, 1f) * difficulty
 
         if (chanceHook > 0.5f)
         {
-            HookMinigame();
-            player.canMove = false;
-            player.isMinigaming = true;
+            if (arrived)
+            {
+                HookMinigame();
+                player.canMove = false;
+                player.isMinigaming = true;
+            }
         }
     }
 

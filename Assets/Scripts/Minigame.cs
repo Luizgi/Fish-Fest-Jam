@@ -10,6 +10,7 @@ public class Minigame : MonoBehaviour
     [SerializeField] int state = 1;
 
     public float speed = 2f;
+    public float waitTime = 2f;
 
     [SerializeField] private GameObject minY;
     [SerializeField] private GameObject maxY;
@@ -21,6 +22,8 @@ public class Minigame : MonoBehaviour
 
     private void Update()
     {
+        
+
         switch (state)
         {
             case (1):
@@ -35,19 +38,25 @@ public class Minigame : MonoBehaviour
 
     void Basic()
     {
-        enemyBar.transform.Translate(Vector3.up * speed * dir * Time.deltaTime);
+        waitTime -= Time.deltaTime;
+        Debug.Log(waitTime);
 
-        _minY = minY.transform.position.y;
-        _maxY = maxY.transform.position.y;
-
-        if (enemyBar.transform.position.y >= _maxY)
+        if(waitTime <= 0)
         {
-            dir = -1;
-        }
-        else if(enemyBar.transform.position.y <= _minY)
-        {
-            dir = 1;
+            enemyBar.transform.Translate(Vector3.up * speed * dir * Time.deltaTime);
+
+            _minY = minY.transform.position.y;
+            _maxY = maxY.transform.position.y;
+
+            if (enemyBar.transform.position.y >= _maxY)
+            {
+                dir = -1;
+            }
+            else if (enemyBar.transform.position.y <= _minY)
+            {
+                dir = 1;
+            }
         }
 
-    }
+     }
 }
