@@ -10,6 +10,7 @@ TagManager:
   - myTimeEating
   - Minigame
   - MinigameCanva
+  - Destroyer
   layers:
   - Default
   - TransparentFX

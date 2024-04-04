@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,20 +10,27 @@ public class Player : MonoBehaviour
     [Header("Components")]
     Rigidbody2D rb2d;
     SpriteRenderer spr;
+    [SerializeField] CameraShake shake;
 
     // Entradas do jogador
     [Header("Inputs")]
     float horizontal;
     float vertical;
 
+    [Header("Tests")]
+    public bool testing = false;
+
     // UI
     [Header("UI")]
     [SerializeField] private Image mySaciety;
     [SerializeField] private Image sacietyBG;
+    [SerializeField] private Image myLife;
+    [SerializeField] private Image lifeBG;
     [SerializeField] private Image myTimeEating;
     [SerializeField] private int maxSaciety = 100;
-    [SerializeField] private float sacietyDecreaseSpeed = 0.5f;
-    [SerializeField] private float sacietyRecoverSpeed = 1.0f;
+    [SerializeField] private int maxLife = 100;
+    [SerializeField] private float DecreaseSpeed = 0.5f;
+    [SerializeField] private float RecoverSpeed = 1.0f;
 
     // Variáveis locais
     [Header("Local")]
@@ -30,19 +38,23 @@ public class Player : MonoBehaviour
     float swimSpeed = 5f;
     float rotSpeed = 150f;
     int saciety;
+    int life;
     int lostLife;
     public bool canMove = true;
+    public float timeFlashing;
+    Color normal = Color.white;
+    Color flash = Color.red;
+    
 
     // Variáveis de comer
     [Header("Eat Variables")]
     public bool canEat = false;
     public bool isMinigaming = false;
     [SerializeField] GameObject possibleEat;
+    [SerializeField] float loseTime = 5f;
+    [SerializeField] float gainTime = 2f;
+    [SerializeField] GameObject emptyHook;
 
-    // Testes
-    [Header("Tests")]
-    [SerializeField] bool testing = true;
-    [SerializeField] bool changeMove = false;
 
     // Controle de tempo de pressionar o botão
     [Header("Hold Time")]
@@ -58,18 +70,22 @@ public class Player : MonoBehaviour
     {
         // Inicializa os componentes
         rb2d = GetComponent<Rigidbody2D>();
-        //spr = GetComponentInChildren<SpriteRenderer>();
+        spr = GetComponentInChildren<SpriteRenderer>();
     }
 
     private void Start()
     {
         // Inicializa a saciedade
         saciety = maxSaciety;
+        life = maxLife;
+
+        mySaciety.fillAmount = ((float)saciety / (float)maxSaciety);
+        myLife.fillAmount = ((float)life / (float)maxLife);
     }
 
     private void Update()
     {
-        mySaciety.fillAmount = ((float)saciety / (float)maxSaciety);
+        UpdatingAttributes();
 
         if (canMove == false)
         {
@@ -83,21 +99,44 @@ public class Player : MonoBehaviour
         horizontal = Input.GetAxisRaw("Horizontal");
         vertical = Input.GetAxisRaw("Vertical");
 
-        // Atualiza a barra de saciedade na UI
-       
-
-        // Testes
-        if (Input.GetButtonDown("Fire1") && testing == true)
-        {
-            LostSaciety(10);
-        }
 
         if (canEat == true && isMinigaming == false)
         {
             Eat();
         }
     }
+    private void FixedUpdate()
+    {
+        // Movimentação do jogador
+        if (canMove == true)
+            Move();
+    }
 
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        // Verifica se o jogador está perto de comida
+        if (collision.CompareTag("Food"))
+        {
+            canEat = true;
+            var food = collision.GetComponent<Food>();
+            possibleEat = collision.gameObject;
+
+            if (currentHoldTime >= 1f)
+                food.Sort();
+
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Food"))
+        {
+            canEat = false;
+        }
+    }
+
+
+    #region Mechanics
     private void Rotate()
     {
         // Rotaciona o jogador conforme a escala
@@ -124,7 +163,7 @@ public class Player : MonoBehaviour
     {
 
         // Comer ao manter o botão pressionado
-        if (Input.GetButton("Fire2") && testing == true)
+        if (Input.GetButton("Fire1"))
         {
             if (!buttonHeld)
             {
@@ -144,6 +183,7 @@ public class Player : MonoBehaviour
 
             if (currentHoldTime >= requiredHoldTime)
             {
+                Instantiate(emptyHook, possibleEat.transform.position, possibleEat.transform.rotation);
                 Destroy(possibleEat);
                 RecoverSaciety(10);
                 buttonHeld = false;
@@ -155,67 +195,6 @@ public class Player : MonoBehaviour
                 myTimeEating.enabled = false;
             buttonHeld = false;
         }
-    }
-
-    private void OnTriggerStay2D(Collider2D collision)
-    {
-        // Verifica se o jogador está perto de comida
-        if (collision.CompareTag("Food"))
-        {
-            canEat = true;
-            var food = collision.GetComponent<Food>();
-            possibleEat = collision.gameObject;
-
-            if (currentHoldTime >= 1f)
-                food.Sort();    
-           
-        }
-    }
-
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Food"))
-        {
-            canEat = false;
-        }
-    }
-
-    void LostSaciety(int lost)
-    {
-        // Perde saciedade
-        saciety -= lost;
-        StartCoroutine(DecreaseSaciety());
-    }
-
-    void RecoverSaciety(int recover)
-    {
-        // Recupera saciedade
-        int remainigRecover = maxSaciety - saciety;
-        int actualRecover = Mathf.Min(remainigRecover, recover);
-
-        StartCoroutine(IncreaseSaciety(actualRecover));
-    }
-
-    private void FixedUpdate()
-    {
-        // Movimentação do jogador
-        if (changeMove == false && canMove == true )
-            Move();
-        if (testing == true && changeMove)
-            MoveTest();
-    }
-
-    private void MoveTest()
-    {
-        // Movimentação de teste
-        if (horizontal != 0)
-        {
-            rb2d.velocity = new Vector2(horizontal * swimSpeed, vertical * swimSpeed);
-            horizontal *= moveLim;
-            vertical *= moveLim;
-        }
-
-        rb2d.velocity = new Vector2(horizontal * swimSpeed, vertical * swimSpeed);
     }
 
     private void Move()
@@ -237,7 +216,86 @@ public class Player : MonoBehaviour
             bubbles.SetActive(false);
         }
     }
+    #endregion
 
+    #region Attributes
+
+    private void UpdatingAttributes()
+    {
+        // Atualiza a barra de saciedade na UI
+        mySaciety.fillAmount = ((float)saciety / (float)maxSaciety);
+        myLife.fillAmount = ((float)life / (float)maxLife);
+
+        //Perder saciedade ao longo do tempo
+        if (saciety >= 0 && testing == false)
+        {
+            loseTime -= Time.deltaTime;
+            if (loseTime <= 0f)
+            {
+                LostSaciety(10);
+                loseTime = 5f;
+            }
+        }
+        else
+        {
+
+            loseTime -= Time.deltaTime;
+            if (loseTime <= 0f)
+            {
+                LostLife(10);
+                loseTime = 5f;
+            }
+        }
+
+        //TESTANDO
+        if(saciety >= maxSaciety)
+        {
+            gainTime -= Time.deltaTime;
+
+            if(gainTime <= 0f && life < maxLife)
+            {
+                RecoverLife(10);
+                gainTime = 3f;
+            }
+        }
+    }
+    void LostSaciety(int lost)
+    {
+        // Perde saciedade
+            saciety -= lost;
+            StartCoroutine(DecreaseSaciety());
+        
+    }
+
+    void RecoverSaciety(int recover)
+    {
+        // Recupera saciedade
+        int remainigRecover = maxSaciety - saciety;
+        int actualRecover = Mathf.Min(remainigRecover, recover);
+
+        StartCoroutine(IncreaseSaciety(actualRecover));
+    }
+
+    void LostLife(int lost)
+    {
+        if(life > 0)
+        {
+            life -= lost;
+            StartCoroutine(DecreaseLife());
+            StartCoroutine(FlashRed());
+        }
+
+    }
+    void RecoverLife(int recover)
+    {
+        int remainingRecover = maxLife - life;
+        int actualRecover = Mathf.Min(remainingRecover, recover);
+
+        StartCoroutine(IncreaseLife(actualRecover));
+    }
+    #endregion
+
+    #region UiStuffs
     IEnumerator DecreaseSaciety()
     {
         // Reduz a saciedade gradualmente
@@ -245,7 +303,7 @@ public class Player : MonoBehaviour
 
         while (sacietyBG.fillAmount > targetFillAmount)
         {
-            sacietyBG.fillAmount -= sacietyDecreaseSpeed * Time.deltaTime;
+            sacietyBG.fillAmount -= DecreaseSpeed * Time.deltaTime;
             yield return null;
         }
 
@@ -259,11 +317,48 @@ public class Player : MonoBehaviour
 
         while (sacietyBG.fillAmount < targetFillAmount)
         {
-            sacietyBG.fillAmount += sacietyRecoverSpeed * Time.deltaTime;
+            sacietyBG.fillAmount += RecoverSpeed * Time.deltaTime;
             yield return null;
         }
 
         sacietyBG.fillAmount = targetFillAmount;
         saciety += recoverAmount;
     }
+
+    IEnumerator DecreaseLife()
+    {
+        // Reduz a vida gradualmente
+        float targetFillAmount = (float)life / (float)maxLife;
+
+        while (lifeBG.fillAmount > targetFillAmount)
+        {
+            lifeBG.fillAmount -= DecreaseSpeed * Time.deltaTime;
+            yield return null;
+        }
+
+        lifeBG.fillAmount = targetFillAmount;
+    }
+
+    IEnumerator IncreaseLife(int recoverAmount)
+    {
+        float targetFillAmount = ((float)life + recoverAmount) / ((float)maxLife);
+
+        while(lifeBG.fillAmount < targetFillAmount)
+        {
+            lifeBG.fillAmount += RecoverSpeed * Time.deltaTime;
+            yield return null;
+        }
+
+        lifeBG.fillAmount = targetFillAmount;
+        life += recoverAmount;
+    }
+
+    IEnumerator FlashRed()
+    {
+        spr.color = flash;
+        shake.TriggerShake(timeFlashing * Time.deltaTime);
+        yield return new WaitForSeconds(timeFlashing * Time.deltaTime);
+        spr.color = normal;
+    }
+    #endregion
 }
