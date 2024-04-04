@@ -38,11 +38,25 @@ public class Fish : MonoBehaviour
         {
             if (saturation >= 0f && isHooking == false)
             {
-                saturation -= 0.005f;
+                saturation -= 0.0025f;
             }
             _saturation.fillAmount = saturation;
             Move();
         }
+    }
+
+    public bool YouWin()
+    {
+        if (saturation <= 0f)
+            return true;
+        return false;
+    }
+
+    public bool YouLose()
+    {
+        if (saturation >= 1f)
+            return true;
+        return false;
     }
 
     private void Move()

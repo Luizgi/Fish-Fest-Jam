@@ -31,6 +31,8 @@ public class Player : MonoBehaviour
     [SerializeField] private int maxLife = 100;
     [SerializeField] private float DecreaseSpeed = 0.5f;
     [SerializeField] private float RecoverSpeed = 1.0f;
+    [SerializeField] GameObject SpaceClick;
+    public bool tuto = false;
 
     // Variáveis locais
     [Header("Local")]
@@ -50,7 +52,7 @@ public class Player : MonoBehaviour
     [Header("Eat Variables")]
     public bool canEat = false;
     public bool isMinigaming = false;
-    [SerializeField] GameObject possibleEat;
+    public GameObject possibleEat;
     [SerializeField] float loseTime = 5f;
     [SerializeField] float gainTime = 2f;
     [SerializeField] GameObject emptyHook;
@@ -85,6 +87,11 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
+
+        // Atualiza a barra de saciedade na UI
+        mySaciety.fillAmount = ((float)saciety / (float)maxSaciety);
+        myLife.fillAmount = ((float)life / (float)maxLife);
+
         UpdatingAttributes();
 
         if (canMove == false)
@@ -135,7 +142,6 @@ public class Player : MonoBehaviour
         }
     }
 
-
     #region Mechanics
     private void Rotate()
     {
@@ -183,9 +189,7 @@ public class Player : MonoBehaviour
 
             if (currentHoldTime >= requiredHoldTime)
             {
-                Instantiate(emptyHook, possibleEat.transform.position, possibleEat.transform.rotation);
-                Destroy(possibleEat);
-                RecoverSaciety(10);
+                EatMethod(true);
                 buttonHeld = false;
             }
         }
@@ -197,6 +201,21 @@ public class Player : MonoBehaviour
         }
     }
 
+    public void EatMethod(bool eat)
+    {
+        if(eat == true)
+        {
+            Instantiate(emptyHook, possibleEat.transform.position, possibleEat.transform.rotation);
+            Destroy(possibleEat);
+            RecoverSaciety(10);
+        }
+        if(eat == false)
+        {
+            Instantiate(emptyHook, possibleEat.transform.position, possibleEat.transform.rotation);
+            Destroy(possibleEat);
+            LostLife(10);
+        }
+    }
     private void Move()
     {
         // Movimentação padrão
@@ -222,12 +241,20 @@ public class Player : MonoBehaviour
 
     private void UpdatingAttributes()
     {
-        // Atualiza a barra de saciedade na UI
-        mySaciety.fillAmount = ((float)saciety / (float)maxSaciety);
-        myLife.fillAmount = ((float)life / (float)maxLife);
+
+
+        if (tuto == true)
+        {
+            SpaceClick.SetActive(true);
+        }
+        else
+        {
+            SpaceClick.SetActive(false);
+        }
+
 
         //Perder saciedade ao longo do tempo
-        if (saciety >= 0 && testing == false)
+        if (saciety >= 0 && testing == false && isMinigaming == false)
         {
             loseTime -= Time.deltaTime;
             if (loseTime <= 0f)
@@ -236,15 +263,14 @@ public class Player : MonoBehaviour
                 loseTime = 5f;
             }
         }
-        else
+        else if(saciety <= 0 && isMinigaming== false)
         {
-
-            loseTime -= Time.deltaTime;
-            if (loseTime <= 0f)
-            {
-                LostLife(10);
-                loseTime = 5f;
-            }
+                loseTime -= Time.deltaTime;
+                if (loseTime <= 0f)
+                {
+                    LostLife(10);
+                    loseTime = 5f;
+                }
         }
 
         //TESTANDO
@@ -276,7 +302,7 @@ public class Player : MonoBehaviour
         StartCoroutine(IncreaseSaciety(actualRecover));
     }
 
-    void LostLife(int lost)
+    public void LostLife(int lost)
     {
         if(life > 0)
         {
@@ -284,7 +310,6 @@ public class Player : MonoBehaviour
             StartCoroutine(DecreaseLife());
             StartCoroutine(FlashRed());
         }
-
     }
     void RecoverLife(int recover)
     {

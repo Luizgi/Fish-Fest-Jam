@@ -10,7 +10,9 @@ public class Food : MonoBehaviour
     [SerializeField] GameObject Minigame;
     [SerializeField] GameObject MinigameCanva;
 
+
     [SerializeField] Player player;
+    [SerializeField] Fish fish;
     [SerializeField] Rigidbody2D rb2d;
 
     [Header("Attributes")]
@@ -41,10 +43,37 @@ public class Food : MonoBehaviour
 
     private void Update()
     {
-        if(transform.position.y <= endedPos.y)
+        AttributesReturn();
+
+        if (transform.position.y <= endedPos.y)
         {
             arrived = true;
             rb2d.velocity = Vector2.zero;
+        }
+    }
+
+    private void AttributesReturn()
+    {
+        if (fish.YouWin() == true)
+        {
+            player.canMove = true;
+            player.isMinigaming = false;
+
+            Minigame.SetActive(false);
+            MinigameCanva.SetActive(false);
+            player.tuto = false;
+            player.EatMethod(true);
+        }
+
+        if (fish.YouLose() == true)
+        {
+            player.canMove = true;
+            player.isMinigaming = false;
+
+            Minigame.SetActive(false);
+            MinigameCanva.SetActive(false);
+            player.tuto = false;
+            player.EatMethod(false);
         }
     }
 
@@ -68,5 +97,7 @@ public class Food : MonoBehaviour
         Debug.Log("Hooked " + "difficulty: " + difficulty);
         Minigame.SetActive(true);
         MinigameCanva.SetActive(true);
+        player.tuto = true;
+
     }
 }

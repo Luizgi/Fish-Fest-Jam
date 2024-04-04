@@ -9,7 +9,7 @@ public class Minigame : MonoBehaviour
 
     [SerializeField] int state = 1;
 
-    public float speed = 2f;
+    public float speed = 4f;
     public float waitTime = 2f;
 
     [SerializeField] private GameObject minY;
@@ -35,6 +35,7 @@ public class Minigame : MonoBehaviour
         }
         
     }
+
 
     void Basic()
     {

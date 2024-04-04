@@ -419,7 +419,6 @@ MonoBehaviour:
   minigame: {fileID: 331747256929870226}
   rb2d: {fileID: 0}
   _saturation: {fileID: 6982954993661508816}
-  space: {fileID: 8108766937533677738, guid: aab2416f631aff34e95a1055808f0f3c, type: 3}
 --- !u!1 &2546532999359891407
 GameObject:
   m_ObjectHideFlags: 0
@@ -859,6 +858,7 @@ MonoBehaviour:
   Minigame: {fileID: 753997790050534569}
   MinigameCanva: {fileID: 4917408747473738340}
   player: {fileID: 0}
+  fish: {fileID: 2453557439190006179}
   rb2d: {fileID: 0}
 --- !u!50 &7657779981935716622
 Rigidbody2D:
