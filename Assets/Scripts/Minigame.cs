@@ -18,11 +18,6 @@ public class Minigame : MonoBehaviour
 
     int dir = 1;
 
-    private void Start()
-    {
-        _minY = minY.transform.position.y;
-        _maxY = maxY.transform.position.y; 
-    }
 
     private void Update()
     {
@@ -41,8 +36,11 @@ public class Minigame : MonoBehaviour
     void Basic()
     {
         enemyBar.transform.Translate(Vector3.up * speed * dir * Time.deltaTime);
-        
-        if(enemyBar.transform.position.y >= _maxY)
+
+        _minY = minY.transform.position.y;
+        _maxY = maxY.transform.position.y;
+
+        if (enemyBar.transform.position.y >= _maxY)
         {
             dir = -1;
         }
