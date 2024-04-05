@@ -66,7 +66,8 @@ public class Player : MonoBehaviour
 
     // Partículas
     [Header("Particles")]
-    [SerializeField] private GameObject bubbles;
+    [SerializeField] GameObject bubbles;
+    [SerializeField] bool canBubble = false;
 
     private void Awake()
     {
@@ -145,6 +146,7 @@ public class Player : MonoBehaviour
     #region Mechanics
     private void Rotate()
     {
+        canBubble = false;
         // Rotaciona o jogador conforme a escala
         float rotationZ = transform.rotation.eulerAngles.z;
         float scaleY = 1f;
@@ -209,7 +211,7 @@ public class Player : MonoBehaviour
             Destroy(possibleEat);
             RecoverSaciety(10);
         }
-        if(eat == false)
+        else
         {
             Instantiate(emptyHook, possibleEat.transform.position, possibleEat.transform.rotation);
             Destroy(possibleEat);

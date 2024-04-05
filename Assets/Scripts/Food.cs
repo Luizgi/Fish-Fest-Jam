@@ -79,11 +79,11 @@ public class Food : MonoBehaviour
 
     public void Sort()
     {
-        chanceHook = 1;//Random.Range(0f, 1f) * difficulty
+        chanceHook = Random.Range(0f, 1f) * difficulty;
 
         if (chanceHook > 0.5f)
         {
-            if (arrived)
+            if (arrived && player.isMinigaming == false)
             {
                 HookMinigame();
                 player.canMove = false;

@@ -33,6 +33,7 @@ public class Fish : MonoBehaviour
     }
     private void Update()
     {
+        Debug.Log(saturation);
 
         if(minigame.waitTime <= 0f)
         {

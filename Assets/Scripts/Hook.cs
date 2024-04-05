@@ -10,7 +10,7 @@ public class Hook : MonoBehaviour
     {
         if (stay.CompareTag("PlayerCanva"))
         {
-            minigame.speed = .5f;
+            minigame.speed = .5f * Time.deltaTime;
         }
     }
 
@@ -18,7 +18,7 @@ public class Hook : MonoBehaviour
     {
         if (exit.CompareTag("PlayerCanva"))
         {
-            minigame.speed = 2f;
+            minigame.speed = 2f * Time.deltaTime;
         }
     }
 }

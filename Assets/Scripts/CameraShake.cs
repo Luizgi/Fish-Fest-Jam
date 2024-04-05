@@ -7,7 +7,7 @@ public class CameraShake : MonoBehaviour
     [Header("Camera Shake")]
     Transform transform;
     float shakeDuration = 0f;
-    float shakeMagnitude = 1f;
+    float shakeMagnitude = .6f;
     float dampingSpeed = 1f;
     Vector3 initialPos;
 
