@@ -67,7 +67,7 @@ public class Player : MonoBehaviour
     // Partículas
     [Header("Particles")]
     [SerializeField] GameObject bubbles;
-    [SerializeField] bool canBubble = false;
+ 
 
     private void Awake()
     {
@@ -146,7 +146,7 @@ public class Player : MonoBehaviour
     #region Mechanics
     private void Rotate()
     {
-        canBubble = false;
+
         // Rotaciona o jogador conforme a escala
         float rotationZ = transform.rotation.eulerAngles.z;
         float scaleY = 1f;
@@ -344,7 +344,7 @@ public class Player : MonoBehaviour
 
         while (sacietyBG.fillAmount < targetFillAmount)
         {
-            sacietyBG.fillAmount += RecoverSpeed * Time.deltaTime;
+            sacietyBG.fillAmount += RecoverSpeed;
             yield return null;
         }
 
@@ -372,7 +372,7 @@ public class Player : MonoBehaviour
 
         while(lifeBG.fillAmount < targetFillAmount)
         {
-            lifeBG.fillAmount += RecoverSpeed * Time.deltaTime;
+            lifeBG.fillAmount += RecoverSpeed;
             yield return null;
         }
 
@@ -383,7 +383,7 @@ public class Player : MonoBehaviour
     IEnumerator FlashRed()
     {
         spr.color = flash;
-        shake.TriggerShake(timeFlashing * Time.deltaTime);
+        shake.TriggerShake(.35f);
         yield return new WaitForSeconds(timeFlashing * Time.deltaTime);
         spr.color = normal;
     }

@@ -400,6 +400,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: obj_Food
       objectReference: {fileID: 0}
+    - target: {fileID: 6695202128501734136, guid: 588b6218783e3dc46b30602e097e2e9b, type: 3}
+      propertyPath: chanceHook
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -6213,7 +6217,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3982941365042558018, guid: b7b9aaf9b5f03de4584b74e764652512, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 19.6
+      value: 14.74
       objectReference: {fileID: 0}
     - target: {fileID: 3982941365042558018, guid: b7b9aaf9b5f03de4584b74e764652512, type: 3}
       propertyPath: m_LocalPosition.z

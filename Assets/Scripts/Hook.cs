@@ -18,7 +18,7 @@ public class Hook : MonoBehaviour
     {
         if (exit.CompareTag("PlayerCanva"))
         {
-            minigame.speed = 2f * Time.deltaTime;
+            minigame.speed = 2f;
         }
     }
 }
