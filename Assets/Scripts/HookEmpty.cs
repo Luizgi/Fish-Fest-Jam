@@ -24,9 +24,9 @@ public class HookEmpty : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D enter)
     {
-        if (collision.CompareTag("Destroyer"))
+        if (enter.CompareTag("Destroyer"))
         {
             Destroy(gameObject);
         }

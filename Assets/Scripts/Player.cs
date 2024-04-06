@@ -6,10 +6,12 @@ using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
+    #region Variables
     // Componentes do jogador
     [Header("Components")]
     Rigidbody2D rb2d;
     SpriteRenderer spr;
+    Animator anim;
     [SerializeField] CameraShake shake;
 
     // Entradas do jogador
@@ -44,6 +46,7 @@ public class Player : MonoBehaviour
     int lostLife;
     public bool canMove = true;
     public float timeFlashing;
+    bool hasFoodArrived = false;
     Color normal = Color.white;
     Color flash = Color.red;
     
@@ -67,11 +70,12 @@ public class Player : MonoBehaviour
     // Partículas
     [Header("Particles")]
     [SerializeField] GameObject bubbles;
- 
+    #endregion
 
     private void Awake()
     {
         // Inicializa os componentes
+        anim = GetComponentInChildren<Animator>();
         rb2d = GetComponent<Rigidbody2D>();
         spr = GetComponentInChildren<SpriteRenderer>();
     }
@@ -88,7 +92,7 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-
+        bubbles.SetActive(true);
         // Atualiza a barra de saciedade na UI
         mySaciety.fillAmount = ((float)saciety / (float)maxSaciety);
         myLife.fillAmount = ((float)life / (float)maxLife);
@@ -108,7 +112,7 @@ public class Player : MonoBehaviour
         vertical = Input.GetAxisRaw("Vertical");
 
 
-        if (canEat == true && isMinigaming == false)
+        if (canEat == true && isMinigaming == false && hasFoodArrived == true)
         {
             Eat();
         }
@@ -120,24 +124,32 @@ public class Player : MonoBehaviour
             Move();
     }
 
-    private void OnTriggerStay2D(Collider2D collision)
+    private void OnTriggerStay2D(Collider2D stay)
     {
         // Verifica se o jogador está perto de comida
-        if (collision.CompareTag("Food"))
+        if (stay.CompareTag("Food"))
         {
-            canEat = true;
-            var food = collision.GetComponent<Food>();
-            possibleEat = collision.gameObject;
+            
+            var food = stay.GetComponent<Food>();
+            hasFoodArrived = food.isArrived();
 
-            if (currentHoldTime >= 1f)
-                food.Sort();
+            if (hasFoodArrived == true)
+            {
+                if (isMinigaming == false)
+                {
+                    canEat = true;
+                    possibleEat = stay.gameObject;
 
+                    if (currentHoldTime >= 1f)
+                        food.Sort();
+                }
+            }
         }
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
+    private void OnTriggerExit2D(Collider2D exit)
     {
-        if (collision.CompareTag("Food"))
+        if (exit.CompareTag("Food"))
         {
             canEat = false;
         }
@@ -230,11 +242,13 @@ public class Player : MonoBehaviour
 
         if (velocity.magnitude == 0)
         {
-            bubbles.SetActive(true);
+            anim.SetBool("_idle", true);
+            anim.SetBool("_swimming", false);
         }
         else
         {
-            bubbles.SetActive(false);
+            anim.SetBool("_swimming", true);
+            anim.SetBool("_idle", false);
         }
     }
     #endregion
@@ -309,6 +323,7 @@ public class Player : MonoBehaviour
         if(life > 0)
         {
             life -= lost;
+            anim.SetTrigger("_damage");
             StartCoroutine(DecreaseLife());
             StartCoroutine(FlashRed());
         }
@@ -344,7 +359,7 @@ public class Player : MonoBehaviour
 
         while (sacietyBG.fillAmount < targetFillAmount)
         {
-            sacietyBG.fillAmount += RecoverSpeed;
+            sacietyBG.fillAmount += RecoverSpeed * Time.deltaTime;
             yield return null;
         }
 
@@ -372,7 +387,7 @@ public class Player : MonoBehaviour
 
         while(lifeBG.fillAmount < targetFillAmount)
         {
-            lifeBG.fillAmount += RecoverSpeed;
+            lifeBG.fillAmount += RecoverSpeed * Time.deltaTime;
             yield return null;
         }
 

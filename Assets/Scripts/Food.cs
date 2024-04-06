@@ -15,8 +15,6 @@ public class Food : MonoBehaviour
     [SerializeField] Fish fish;
     [SerializeField] Rigidbody2D rb2d;
 
-    [Header("Attributes")]
-    float difficulty;
 
 
     [Header("Movimentation")]
@@ -28,11 +26,14 @@ public class Food : MonoBehaviour
     private void Awake()
     {   
         rb2d = GetComponent<Rigidbody2D>();
-        difficulty = Random.Range(0f, 1f);
         player = FindAnyObjectByType<Player>();
 
     }
 
+    public bool isArrived()
+    {
+        return arrived;
+    }
     private void Start()
     {
         endedPos = new Vector2(transform.position.x, Random.Range(minY, maxY));
@@ -79,13 +80,14 @@ public class Food : MonoBehaviour
 
     public void Sort()
     {
-        chanceHook = Random.Range(0f, 1f) * difficulty;
+        chanceHook = Random.Range(0f, 1f);
 
         if (chanceHook > 0.5f)
         {
             if (arrived && player.isMinigaming == false)
             {
                 HookMinigame();
+                player.canEat = false;
                 player.canMove = false;
                 player.isMinigaming = true;
             }
@@ -94,7 +96,6 @@ public class Food : MonoBehaviour
 
     private void HookMinigame()
     {   
-        Debug.Log("Hooked " + "difficulty: " + difficulty);
         Minigame.SetActive(true);
         MinigameCanva.SetActive(true);
         player.tuto = true;

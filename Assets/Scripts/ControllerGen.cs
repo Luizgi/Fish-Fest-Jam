@@ -22,7 +22,6 @@ public class ControllerGen : MonoBehaviour
         if (qtdSpawned <= qtdToSpawn)
         {
             Instantiate(food, placetoSpawn, transform.rotation);
-            Debug.Log("Quantidade de objetos do tipo Food encontrados: " + qtdSpawned);
         }
     }
 }

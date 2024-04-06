@@ -36,11 +36,9 @@ public class Minigame : MonoBehaviour
         
     }
 
-
     void Basic()
     {
         waitTime -= Time.deltaTime;
-        Debug.Log(waitTime);
 
         if(waitTime <= 0)
         {

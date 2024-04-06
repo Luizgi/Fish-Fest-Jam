@@ -29,20 +29,37 @@ public class Fish : MonoBehaviour
     private void Start()
     {
         minY = _minY.transform.position.y;
-        maxY = _maxY.transform.position.y;
+        maxY = _maxY.transform.position.y - .25f;
     }
     private void Update()
     {
-        Debug.Log(saturation);
-
         if(minigame.waitTime <= 0f)
         {
             if (saturation >= 0f && isHooking == false)
             {
-                saturation -= 0.0025f;
+                saturation -= .4f * Time.deltaTime;
             }
             _saturation.fillAmount = saturation;
             Move();
+        }
+    }
+    private void OnTriggerStay2D(Collider2D stay)
+    {
+        if (stay.CompareTag("HookCanva"))
+        {
+            if (saturation <= 1)
+            {
+                isHooking = true;
+                saturation += .5f * Time.deltaTime;
+            }
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D exit)
+    {
+        if (exit.CompareTag("HookCanva"))
+        {
+            isHooking = false;
         }
     }
 
@@ -78,23 +95,5 @@ public class Fish : MonoBehaviour
         }
     }
 
-    private void OnTriggerStay2D(Collider2D stay)
-    {
-        if (stay.CompareTag("HookCanva"))
-        {
-            if (saturation <= 1)
-            {
-                isHooking = true;
-                saturation += 0.01f;
-            }
-        }
-    }
 
-    private void OnTriggerExit2D(Collider2D exit)
-    {
-        if (exit.CompareTag("HookCanva"))
-        {
-            isHooking = false;
-        }
-    }
 }
