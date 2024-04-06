@@ -20,7 +20,7 @@ public class HookEmpty : MonoBehaviour
     {
         if(transform.position.y < _maxY)
         {
-            rb2d.velocity = Vector2.up;
+            rb2d.velocity = Vector2.up * 2;
         }
     }
 

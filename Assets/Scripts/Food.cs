@@ -14,6 +14,7 @@ public class Food : MonoBehaviour
     [SerializeField] Player player;
     [SerializeField] Fish fish;
     [SerializeField] Rigidbody2D rb2d;
+    [Range(0, 1)] public float difficulty;
 
 
 
@@ -24,10 +25,9 @@ public class Food : MonoBehaviour
     Vector2 endedPos;
 
     private void Awake()
-    {   
+    {
         rb2d = GetComponent<Rigidbody2D>();
         player = FindAnyObjectByType<Player>();
-
     }
 
     public bool isArrived()
@@ -80,9 +80,11 @@ public class Food : MonoBehaviour
 
     public void Sort()
     {
+        //Testes: difficulty = Random.Range(0, 1);
+
         chanceHook = Random.Range(0f, 1f);
 
-        if (chanceHook > 0.5f)
+        if (chanceHook > 0.7f)
         {
             if (arrived && player.isMinigaming == false)
             {

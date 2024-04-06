@@ -182,6 +182,7 @@ public class Player : MonoBehaviour
     private void Eat()
     {
 
+
         // Comer ao manter o botão pressionado
         if (Input.GetButton("Fire1"))
         {
@@ -189,7 +190,8 @@ public class Player : MonoBehaviour
             {
                 currentHoldTime = 0f;
                 buttonHeld = true;
-                if(myTimeEating!= null)
+
+                if (myTimeEating!= null)
                 {
                     myTimeEating.enabled = true;
                     myTimeEating.fillAmount = currentHoldTime;
@@ -217,6 +219,7 @@ public class Player : MonoBehaviour
 
     public void EatMethod(bool eat)
     {
+        myTimeEating.enabled = false;
         if(eat == true)
         {
             Instantiate(emptyHook, possibleEat.transform.position, possibleEat.transform.rotation);

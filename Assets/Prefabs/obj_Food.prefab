@@ -719,8 +719,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -165.3, y: -7.65}
-  m_SizeDelta: {x: 39.19, y: 258.71}
+  m_AnchoredPosition: {x: -203.84122, y: -7.731383}
+  m_SizeDelta: {x: 30.722342, y: 230.4628}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7852800754446921618
 CanvasRenderer:
@@ -862,6 +862,7 @@ MonoBehaviour:
   player: {fileID: 0}
   fish: {fileID: 2453557439190006179}
   rb2d: {fileID: 0}
+  difficulty: 0
 --- !u!50 &7657779981935716622
 Rigidbody2D:
   serializedVersion: 4
@@ -1093,8 +1094,8 @@ RectTransform:
   m_Children:
   - {fileID: 229727045007755522}
   - {fileID: 6254090718241329272}
-  - {fileID: 6190811162683358382}
   - {fileID: 3944666300224185528}
+  - {fileID: 6190811162683358382}
   - {fileID: 2990417484433402951}
   - {fileID: 7373381441774435523}
   m_Father: {fileID: 8902391958641076834}
