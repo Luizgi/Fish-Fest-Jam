@@ -24,17 +24,25 @@ public class Player : MonoBehaviour
 
     // UI
     [Header("UI")]
-    [SerializeField] private Image mySaciety;
-    [SerializeField] private Image sacietyBG;
-    [SerializeField] private Image myLife;
-    [SerializeField] private Image lifeBG;
-    [SerializeField] private Image myTimeEating;
-    [SerializeField] private int maxSaciety = 100;
-    [SerializeField] private int maxLife = 100;
-    [SerializeField] private float DecreaseSpeed = 0.5f;
-    [SerializeField] private float RecoverSpeed = 1.0f;
+    [SerializeField]  Image mySaciety;
+    [SerializeField]  Image sacietyBG;
+    [SerializeField]  Image myLife;
+    [SerializeField]  Image lifeBG;
+    [SerializeField]  Image myTimeEating;
+    [SerializeField]  Text myPoints;
+    [SerializeField]  Text deathScenePoints;
+    [SerializeField]  Text myMaxPoints;
+    [SerializeField]  Text ManyPoints;
+    [SerializeField]  int maxSaciety = 100;
+    [SerializeField]  int maxLife = 100;
+    [SerializeField]  float DecreaseSpeed = 0.5f;
+    [SerializeField]  float RecoverSpeed = 1.0f;
     [SerializeField] GameObject SpaceClick;
     public bool tuto = false;
+    [SerializeField] GameObject YouDie;
+    int point;
+    int maxPoints;
+
 
     // Variáveis locais
     [Header("Local")]
@@ -85,6 +93,7 @@ public class Player : MonoBehaviour
         // Inicializa a saciedade
         saciety = maxSaciety;
         life = maxLife;
+        maxPoints = PlayerPrefs.GetInt("Max Pontuation", 0);
 
         mySaciety.fillAmount = ((float)saciety / (float)maxSaciety);
         myLife.fillAmount = ((float)life / (float)maxLife);
@@ -92,6 +101,12 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
+        if(point > maxPoints)
+        {
+            maxPoints = point;
+            PlayerPrefs.SetInt("Max Pontuation", maxPoints);
+        }
+
         bubbles.SetActive(true);
         // Atualiza a barra de saciedade na UI
         mySaciety.fillAmount = ((float)saciety / (float)maxSaciety);
@@ -225,12 +240,19 @@ public class Player : MonoBehaviour
             Instantiate(emptyHook, possibleEat.transform.position, possibleEat.transform.rotation);
             Destroy(possibleEat);
             RecoverSaciety(10);
+
+            Points(20);
         }
         else
         {
             Instantiate(emptyHook, possibleEat.transform.position, possibleEat.transform.rotation);
             Destroy(possibleEat);
             LostLife(10);
+
+            if(point > 0)
+            {
+                Points(-10);
+            }
         }
     }
     private void Move()
@@ -323,12 +345,16 @@ public class Player : MonoBehaviour
 
     public void LostLife(int lost)
     {
-        if(life > 0)
+        if(life >= 0)
         {
             life -= lost;
             anim.SetTrigger("_damage");
             StartCoroutine(DecreaseLife());
             StartCoroutine(FlashRed());
+        }
+        else if(life <= 0)
+        {
+            Die();
         }
     }
     void RecoverLife(int recover)
@@ -338,6 +364,38 @@ public class Player : MonoBehaviour
 
         StartCoroutine(IncreaseLife(actualRecover));
     }
+
+    void Die()
+    {
+        if(YouDie!= null)
+        {
+            YouDie.SetActive(true);
+            deathScenePoints.text = point.ToString();
+            myMaxPoints.text = maxPoints.ToString();
+        }
+
+        Destroy(gameObject);
+    }
+
+    void Points(int quantity)
+    {
+            point += quantity;
+
+            if (quantity < 0)
+            {
+                ManyPoints.color = Color.red;
+                ManyPoints.text = quantity.ToString();
+            }
+            if (quantity > 0)
+            {
+                ManyPoints.color = Color.green;
+                ManyPoints.text = quantity.ToString();
+            }
+
+        myPoints.text = point.ToString();
+
+    }
+
     #endregion
 
     #region UiStuffs
