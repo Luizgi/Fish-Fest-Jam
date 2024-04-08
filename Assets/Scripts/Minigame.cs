@@ -17,6 +17,7 @@ public class Minigame : MonoBehaviour
     public float _minY;
     public float _maxY;
 
+
     int dir = 1;
 
 
@@ -47,11 +48,11 @@ public class Minigame : MonoBehaviour
             _minY = minY.transform.position.y;
             _maxY = maxY.transform.position.y;
 
-            if (enemyBar.transform.position.y >= _maxY)
+            if (enemyBar.transform.position.y >= _maxY - 0.6f) // adicionei apenas um ajuste aqui para barra ficar na pos certa
             {
                 dir = -1;
             }
-            else if (enemyBar.transform.position.y <= _minY)
+            else if (enemyBar.transform.position.y <= _minY + 0.3f) // aqui tbm
             {
                 dir = 1;
             }

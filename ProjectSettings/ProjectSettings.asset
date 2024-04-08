@@ -14,7 +14,7 @@ PlayerSettings:
   accelerometerFrequency: 60
   companyName: DefaultCompany
   productName: Fish Fest Jam
-  defaultCursor: {fileID: 0}
+  defaultCursor: {fileID: 2800000, guid: 2ac1f3c741e62884ca714e2ca4f7cb65, type: 3}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.13725491, g: 0.12156863, b: 0.1254902, a: 1}
   m_ShowUnitySplashScreen: 1
@@ -282,7 +282,7 @@ PlayerSettings:
   - m_BuildTarget: 
     m_Icons:
     - serializedVersion: 2
-      m_Icon: {fileID: 2800000, guid: 8302b701d8970a341a2f9b7018e1bb37, type: 3}
+      m_Icon: {fileID: 2800000, guid: a8d7cf8058daffd41823feab0e011539, type: 3}
       m_Width: 128
       m_Height: 128
       m_Kind: 0
