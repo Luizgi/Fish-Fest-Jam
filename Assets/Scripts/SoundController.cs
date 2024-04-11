@@ -26,7 +26,7 @@ public class SoundController : MonoBehaviour
 
     private void Start()
     {
-        PlayMusic("Idle");
+        PlayMusic("Menu");
     }
 
     public void PlayMusic(string name)

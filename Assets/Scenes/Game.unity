@@ -622,7 +622,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1769245627}
         m_TargetAssemblyTypeName: GameController, Assembly-CSharp
-        m_MethodName: Return
+        m_MethodName: Play
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2593,7 +2593,7 @@ Transform:
   m_GameObject: {fileID: 1454646915}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.88, y: -0.62, z: 0}
+  m_LocalPosition: {x: -4.2, y: -0.62, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

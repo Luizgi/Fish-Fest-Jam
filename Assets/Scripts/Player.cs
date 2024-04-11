@@ -90,6 +90,9 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
+        if(SoundController.Instance != null)
+            SoundController.Instance.PlayMusic("Idle");
+
         // Inicializa a saciedade
         saciety = maxSaciety;
         life = maxLife;
@@ -379,18 +382,8 @@ public class Player : MonoBehaviour
 
     void Points(int quantity)
     {
-            point += quantity;
-
-            if (quantity < 0)
-            {
-                ManyPoints.color = Color.red;
-                ManyPoints.text = quantity.ToString();
-            }
-            if (quantity > 0)
-            {
-                ManyPoints.color = Color.green;
-                ManyPoints.text = quantity.ToString();
-            }
+        point += quantity;
+        StartCoroutine(AppearPoint(quantity));
 
         myPoints.text = point.ToString();
 
@@ -462,6 +455,30 @@ public class Player : MonoBehaviour
         shake.TriggerShake(.35f);
         yield return new WaitForSeconds(timeFlashing * Time.deltaTime);
         spr.color = normal;
+    }
+
+    IEnumerator AppearPoint(int quantity)
+    {
+        if (quantity < 0)
+        {
+            ManyPoints.enabled = true;
+
+            ManyPoints.color = Color.red;
+            ManyPoints.text = quantity.ToString();
+
+            yield return new WaitForSeconds(.5f);
+            ManyPoints.enabled = false;
+        }
+        if (quantity > 0)
+        {
+            ManyPoints.enabled = true;
+
+            ManyPoints.color = Color.green;
+            ManyPoints.text = quantity.ToString();
+
+            yield return new WaitForSeconds(.5f);
+            ManyPoints.enabled = false;
+        }
     }
     #endregion
 }

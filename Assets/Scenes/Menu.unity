@@ -182,10 +182,10 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: d1f66c03516bcae4b91d1f6da32711e0, type: 3}
-    m_FontSize: 265
+    m_FontSize: 74
     m_FontStyle: 0
     m_BestFit: 1
-    m_MinSize: 94
+    m_MinSize: 74
     m_MaxSize: 300
     m_Alignment: 4
     m_AlignByGeometry: 0
@@ -343,6 +343,8 @@ MonoBehaviour:
   musicSounds:
   - name: Idle
     clip: {fileID: 8300000, guid: d8e8cd4f9f5b4644fa654995722a5388, type: 3}
+  - name: Menu
+    clip: {fileID: 8300000, guid: 6f7a6ea3432531b4fa49c872e07c81a1, type: 3}
   sfxSounds: []
   musicSource: {fileID: 2097929732}
   sfxSource: {fileID: 1319011110}
@@ -380,8 +382,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -86.67}
-  m_SizeDelta: {x: 2001, y: 1253}
+  m_AnchoredPosition: {x: 0, y: -40}
+  m_SizeDelta: {x: 1486.3618, y: 930.7402}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &722253965
 MonoBehaviour:
@@ -457,7 +459,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.43987504, y: 0.086500004}
   m_AnchorMax: {x: 0.55852085, y: 0.19900002}
-  m_AnchoredPosition: {x: 1.5200043, y: 69}
+  m_AnchoredPosition: {x: -0.57948303, y: -1.3114014}
   m_SizeDelta: {x: 1.158905, y: 2.6229}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &820412901
@@ -1025,10 +1027,10 @@ RectTransform:
   - {fileID: 182937359}
   m_Father: {fileID: 1146856649}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.42800003, y: 0.42661113}
-  m_AnchorMax: {x: 0.62978125, y: 0.54300004}
-  m_AnchoredPosition: {x: -55.47, y: -149}
-  m_SizeDelta: {x: 162.6877, y: 11.506432}
+  m_AnchorMin: {x: 0.30600002, y: 0.24066666}
+  m_AnchorMax: {x: 0.7213125, y: 0.40555558}
+  m_AnchoredPosition: {x: -1, y: 1.0000305}
+  m_SizeDelta: {x: -0.35710144, y: 1.3546}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1861730289
 MonoBehaviour:
@@ -1267,7 +1269,7 @@ AudioSource:
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0

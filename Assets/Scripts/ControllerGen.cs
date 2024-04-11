@@ -17,7 +17,7 @@ public class ControllerGen : MonoBehaviour
     {
         foods = FindObjectsOfType<Food>();
         qtdSpawned = foods.Length + 1;
-        placetoSpawn = new Vector2(Random.Range(-8, 8), 5.6f);
+        placetoSpawn = new Vector2(Random.Range(-4.5f, 4.5f), 5.6f);
 
         if (qtdSpawned <= qtdToSpawn)
         {
